@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".ui.description.DescriptionFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/extra_title"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:textAlignment="center"
+        android:textSize = "32sp"
+        tools:text="Title"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/extra_start"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:textSize = "20sp"
+        tools:text="1:00 date month year"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/extra_end"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:textSize = "20sp"
+        tools:text="1:00 date month year"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/extra_desc"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:textSize = "16sp"
+        tools:text="Бабабуй бабабуй"
+        />
+</LinearLayout>
