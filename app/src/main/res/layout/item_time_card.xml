@@ -12,7 +12,7 @@
         android:id="@+id/time"
         android:textSize ="16sp"
         tools:text="0:00"
-        android:textAlignment="center"
+        android:gravity="center_vertical|center_horizontal"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -24,9 +24,10 @@
         android:id="@+id/hourRecycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_time_card_note"/>
+        tools:listitem="@layout/item_time_card_note" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

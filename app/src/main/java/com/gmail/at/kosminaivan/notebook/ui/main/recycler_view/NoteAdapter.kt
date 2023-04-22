@@ -3,13 +3,18 @@ package com.gmail.at.kosminaivan.notebook.ui.main.recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.gmail.at.kosminaivan.notebook.databinding.ItemTimeCardBinding
+import com.gmail.at.kosminaivan.notebook.R
 import com.gmail.at.kosminaivan.notebook.databinding.ItemTimeCardNoteBinding
-import com.gmail.at.kosminaivan.notebook.model.Card
 import com.gmail.at.kosminaivan.notebook.model.Note
+import com.gmail.at.kosminaivan.notebook.ui.description.DescriptionFragment
 
-class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>(), View.OnClickListener {
+class NoteAdapter(val navController: NavController) : RecyclerView.Adapter<NoteViewHolder>(), View.OnClickListener {
+
+    private lateinit var binding:ItemTimeCardNoteBinding
 
     var notes: List<Note> = emptyList()
         set(newValue) {
@@ -19,7 +24,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>(), View.OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemTimeCardNoteBinding.inflate(inflater, parent, false)
+        binding = ItemTimeCardNoteBinding.inflate(inflater, parent, false)
 
         binding.root.setOnClickListener(this)
 
@@ -31,15 +36,28 @@ class NoteAdapter : RecyclerView.Adapter<NoteViewHolder>(), View.OnClickListener
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
+        holder.itemView.tag = note.id
         holder.binding.apply {
             title.text = note.title
-            timeStart.text = note.dateStart
-            timeEnd.text = note.dateFinish
-
+            timeStart.text = note.dateStart.toString()
+            timeEnd.text = note.dateFinish.toString()
+            }
         }
-    }
 
-    override fun onClick(v: View?) {
+
+    override fun onClick(v: View) {
+
+        navController.navigate(R.id.action_mainFragment_to_descriptionFragment,
+        bundleOf(
+            DescriptionFragment.ARG_ID to (v.tag as Long)
+            )
+        )
+
+        Toast.makeText(
+            v.context,"Я вроде нажал ${binding.title.text} ${binding.timeStart.text}" +
+                    " ${binding.timeEnd.text}",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
 

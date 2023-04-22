@@ -1,32 +1,35 @@
 package com.gmail.at.kosminaivan.notebook.ui.description
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.gmail.at.kosminaivan.notebook.App
 import com.gmail.at.kosminaivan.notebook.R
+import com.gmail.at.kosminaivan.notebook.databinding.FragmentDescriptionBinding
+import com.gmail.at.kosminaivan.notebook.model.CardService
 
-class DescriptionFragment : Fragment() {
+class DescriptionFragment : Fragment(R.layout.fragment_description) {
 
-    companion object {
-        fun newInstance() = DescriptionFragment()
-    }
+    private val cardService: CardService
+        get() = (requireContext().applicationContext as App).cardService
 
+    private lateinit var binding: FragmentDescriptionBinding
     private lateinit var viewModel: DescriptionViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding =  FragmentDescriptionBinding.bind(view)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_description, container, false)
+        val note = cardService.getNoteById(requireArguments().getLong(ARG_ID))
+
+
+        binding.extraTitle.text = note.title
+        binding.extraStart.text = note.dateStart.toString()
+        binding.extraEnd.text = note.dateFinish.toString()
+        binding.extraDesc.text = note.description
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DescriptionViewModel::class.java)
-        // TODO: Use the ViewModel
+    companion object{
+        const val ARG_ID = "name"
     }
 
 }

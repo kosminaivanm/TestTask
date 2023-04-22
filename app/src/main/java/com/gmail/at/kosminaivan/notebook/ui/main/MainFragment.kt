@@ -1,22 +1,28 @@
 package com.gmail.at.kosminaivan.notebook.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gmail.at.kosminaivan.notebook.app.App
+import com.gmail.at.kosminaivan.notebook.App
+import com.gmail.at.kosminaivan.notebook.R
 import com.gmail.at.kosminaivan.notebook.databinding.FragmentMainBinding
 import com.gmail.at.kosminaivan.notebook.model.CardListener
 import com.gmail.at.kosminaivan.notebook.model.CardService
 import com.gmail.at.kosminaivan.notebook.ui.main.recycler_view.CardAdapter
+import java.sql.Timestamp
+import java.util.*
 
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentMainBinding
-    private val adapter = CardAdapter()
+    private lateinit var adapter: CardAdapter
 
     private val cardService: CardService
         get() = (requireContext().applicationContext as App).cardService
@@ -26,20 +32,34 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        cardService.addListener(cardListener)
 
-        val layoutManager = LinearLayoutManager(context)
+        adapter = CardAdapter(findNavController())
+        adapter.cards = cardService.getCardsForDate(Timestamp(System.currentTimeMillis() - System.currentTimeMillis() % CardService.dayInMillis))
+
         binding.idRV.adapter = adapter
-        binding.idRV.layoutManager = layoutManager
+        binding.idRV.layoutManager = LinearLayoutManager(context)
+
+        binding.datePicker.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val cal = GregorianCalendar(year, month, dayOfMonth)
+            val millis = cal.timeInMillis
+            Toast.makeText(context, "Date: $year $month $dayOfMonth $millis", LENGTH_SHORT).show()
+            cardService.currentCalendarTimestamp = Timestamp(millis)
+        }
+
+        binding.floatingActionButton.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_mainFragment_to_createFragment)
+        }
+
+        cardService.addListener(taskListener)
+
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        cardService.removeListener(cardListener)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cardService.removeListener(taskListener)
     }
 
-    private val cardListener: CardListener = {
-        adapter.cards = it
-    }
+    private val taskListener: CardListener = { adapter.cards = it }
+
 }

@@ -2,12 +2,13 @@ package com.gmail.at.kosminaivan.notebook.ui.main.recycler_view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gmail.at.kosminaivan.notebook.databinding.ItemTimeCardBinding
 import com.gmail.at.kosminaivan.notebook.model.Card
 
-class CardAdapter() : RecyclerView.Adapter<CardsViewHolder>() {
+class CardAdapter(private val navController: NavController) : RecyclerView.Adapter<CardsViewHolder>() {
 
     var cards: List<Card> = emptyList()
         set(newValue) {
@@ -19,7 +20,7 @@ class CardAdapter() : RecyclerView.Adapter<CardsViewHolder>() {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemTimeCardBinding.inflate(inflater, parent, false)
 
-        binding.hourRecycler.adapter = NoteAdapter()
+        binding.hourRecycler.adapter = NoteAdapter(navController)
         binding.hourRecycler.layoutManager = LinearLayoutManager(parent.context)
 
         return CardsViewHolder(binding)
