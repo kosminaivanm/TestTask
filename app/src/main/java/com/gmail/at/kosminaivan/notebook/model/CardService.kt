@@ -1,64 +1,58 @@
 package com.gmail.at.kosminaivan.notebook.model
 
-import android.content.Context
-import androidx.room.Room
-import com.gmail.at.kosminaivan.notebook.App
-import com.gmail.at.kosminaivan.notebook.room.AppDatabase
-import com.gmail.at.kosminaivan.notebook.room.NoteDao
-import com.gmail.at.kosminaivan.notebook.room.NoteEntity
+import com.gmail.at.kosminaivan.notebook.model.repository.Repository
 import java.sql.Timestamp
 
 typealias CardListener = (cards: List<Card>) -> Unit
 
-class Card(
-    val time: String,
-    var notes: List<Note>
-)
-
-class CardService(val db: AppDatabase, val applicationContext: Context) {
+class CardService(private val rep: Repository) {
 
     private var cards: List<Card> = (0..23).map { Card("$it:00", emptyList()) }
-
-    private val noteDao = db.noteDao()
 
     var listeners = mutableSetOf<CardListener>()
 
     var currentCalendarTimestamp: Timestamp = Timestamp(System.currentTimeMillis())
-        set(value)
-        {
+        set(value) {
             field = value
             cards = getCardsForDate(value)
             notifyChanges()
         }
 
     fun getCardsForDate(date: Timestamp): List<Card> {
-        cards.forEachIndexed { index ,value ->
-            value.notes =
-                noteDao.loadAllNotesDateIncludes(date.time + index * hourInMills).map{
-                    Note.getNoteFromNoteEntity(it)
-                }
+        cards.forEachIndexed { index, value ->
+            val notes =
+                rep.loadNotesForTimeRange(
+                    Timestamp(date.time + index * hourInMills + 1),
+                    Timestamp(date.time + (index + 1) * hourInMills - 1)
+                ).toMutableList()
+            value.notes = notes.distinct()
         }
         return cards
     }
 
-    fun getNoteById(id: Long) : Note
-    {
-        return Note.getNoteFromNoteEntity(db.noteDao().loadSingle(id))
+    fun getNoteById(id: Long): Note {
+        return rep.loadNoteById(id)
     }
-    fun createNoteForTimeStampRange(dateStart: Timestamp, dateEnd: Timestamp, name: String, description: String)
-    {
-        db.noteDao().insertAll(NoteEntity(
-            0,
-            dateStart.time + 1,
-            dateEnd.time,
-            name,
-            description
-        ))
+
+    fun createNoteForTimeStampRange(
+        dateStart: Timestamp,
+        dateEnd: Timestamp,
+        name: String,
+        description: String
+    ) {
+        rep.addNote(
+            Note(
+                0,
+                Timestamp(dateStart.time),
+                Timestamp(dateEnd.time),
+                name,
+                description
+            )
+        )
         updateCards()
     }
 
-    private fun updateCards()
-    {
+    private fun updateCards() {
         cards = getCardsForDate(currentCalendarTimestamp)
         notifyChanges()
     }
@@ -80,7 +74,6 @@ class CardService(val db: AppDatabase, val applicationContext: Context) {
     companion object {
         const val dayInMillis = 86400000L
         const val hourInMills = (dayInMillis / 24)
-        const val taskDefaultDuration = (hourInMills * 1.5).toLong()
     }
 
 }

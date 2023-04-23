@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +18,6 @@ import java.util.*
 
 class MainFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: CardAdapter
 
@@ -30,7 +27,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
         adapter = CardAdapter(findNavController())
@@ -42,7 +39,6 @@ class MainFragment : Fragment() {
         binding.datePicker.setOnDateChangeListener { view, year, month, dayOfMonth ->
             val cal = GregorianCalendar(year, month, dayOfMonth)
             val millis = cal.timeInMillis
-            Toast.makeText(context, "Date: $year $month $dayOfMonth $millis", LENGTH_SHORT).show()
             cardService.currentCalendarTimestamp = Timestamp(millis)
         }
 

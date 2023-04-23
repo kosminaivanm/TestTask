@@ -14,7 +14,6 @@ class DescriptionFragment : Fragment(R.layout.fragment_description) {
         get() = (requireContext().applicationContext as App).cardService
 
     private lateinit var binding: FragmentDescriptionBinding
-    private lateinit var viewModel: DescriptionViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding =  FragmentDescriptionBinding.bind(view)

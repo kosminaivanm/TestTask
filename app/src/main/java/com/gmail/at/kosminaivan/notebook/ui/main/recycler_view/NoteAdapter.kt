@@ -3,7 +3,6 @@ package com.gmail.at.kosminaivan.notebook.ui.main.recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
@@ -46,18 +45,11 @@ class NoteAdapter(val navController: NavController) : RecyclerView.Adapter<NoteV
 
 
     override fun onClick(v: View) {
-
         navController.navigate(R.id.action_mainFragment_to_descriptionFragment,
         bundleOf(
             DescriptionFragment.ARG_ID to (v.tag as Long)
             )
         )
-
-        Toast.makeText(
-            v.context,"Я вроде нажал ${binding.title.text} ${binding.timeStart.text}" +
-                    " ${binding.timeEnd.text}",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }
 
