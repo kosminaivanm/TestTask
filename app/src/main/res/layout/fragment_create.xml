@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.create.CreateFragment">
+    tools:context=".ui.create.CreateFragment"
+    >
 
     <TextView
         android:id="@+id/screenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Tast"
+        android:text="@string/create_task"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Title"
+        android:text="@string/title"
 
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +35,7 @@
             android:id="@+id/title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title" />
+            android:hint="@string/create_title" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,21 +51,24 @@
             android:id="@+id/date_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 06 2022"
+            tools:text="01.01.1970"
             android:textSize="30sp"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/teal_200"
+            />
 
         <Button
             android:id="@+id/time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1:30"
+            tools:text="01:30"
             android:textSize="30sp"
             android:layout_margin="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/teal_200"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,21 +85,23 @@
             android:id="@+id/date_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 06 2022"
+            tools:text="01.01.1970"
             android:textSize="30sp"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/teal_200"/>
 
         <Button
             android:id="@+id/time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1:30"
+            tools:text="01:30"
             android:textSize="30sp"
             android:layout_margin="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/teal_200"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,18 +110,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Description"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_end_layout" >
+        app:layout_constraintTop_toBottomOf="@+id/date_end_layout"
+        android:hint="@string/create_description">
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Description" />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,9 +130,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:text="Create"
-        android:textSize="20dp"
+        android:text="@string/create"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/teal_200"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

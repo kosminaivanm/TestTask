@@ -10,6 +10,8 @@ import com.gmail.at.kosminaivan.notebook.R
 import com.gmail.at.kosminaivan.notebook.databinding.ItemTimeCardNoteBinding
 import com.gmail.at.kosminaivan.notebook.model.Note
 import com.gmail.at.kosminaivan.notebook.ui.description.DescriptionFragment
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class NoteAdapter(val navController: NavController) : RecyclerView.Adapter<NoteViewHolder>(), View.OnClickListener {
 
@@ -35,11 +37,12 @@ class NoteAdapter(val navController: NavController) : RecyclerView.Adapter<NoteV
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
+        val formatDate = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")
         holder.itemView.tag = note.id
         holder.binding.apply {
             title.text = note.title
-            timeStart.text = note.dateStart.toString()
-            timeEnd.text = note.dateFinish.toString()
+            timeStart.text = note.dateStart.toInstant().atZone(ZoneId.systemDefault()).format(formatDate)
+            timeEnd.text = note.dateFinish.toInstant().atZone(ZoneId.systemDefault()).format(formatDate)
             }
         }
 

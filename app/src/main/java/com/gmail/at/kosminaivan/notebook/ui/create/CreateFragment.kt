@@ -40,19 +40,19 @@ class CreateFragment : Fragment(R.layout.fragment_create) {
         }
 
         binding.dateStart.apply {
-            text = "${calendarStart.get(Calendar.DATE)}:${calendarStart.get(Calendar.MONTH) + 1}:${calendarStart.get(Calendar.YEAR)}"
+            text = "${format(calendarStart.get(Calendar.DATE))}.${format(calendarStart.get(Calendar.MONTH) + 1)}.${calendarStart.get(Calendar.YEAR)}"
             setOnClickListener { openDatePicker(binding.dateStart, calendarStart) }
         }
         binding.dateEnd.apply {
-            text = "${calendarEnd.get(Calendar.DATE)}:${calendarEnd.get(Calendar.MONTH) + 1}:${calendarEnd.get(Calendar.YEAR)}"
+            text = "${format(calendarEnd.get(Calendar.DATE))}.${format(calendarEnd.get(Calendar.MONTH) + 1)}.${calendarEnd.get(Calendar.YEAR)}"
             setOnClickListener { openDatePicker(binding.dateEnd, calendarEnd) }
         }
         binding.timeStart.apply {
-            text = "${calendarStart.get(Calendar.HOUR_OF_DAY)}:${calendarStart.get(Calendar.MINUTE)}"
+            text = "${format(calendarStart.get(Calendar.HOUR_OF_DAY))}:${format(calendarStart.get(Calendar.MINUTE))}"
             setOnClickListener { openTimePicker(binding.timeStart, calendarStart) }
         }
         binding.timeEnd.apply {
-            text = "${calendarEnd.get(Calendar.HOUR_OF_DAY)}:${calendarEnd.get(Calendar.MINUTE)}"
+            text = "${format(calendarEnd.get(Calendar.HOUR_OF_DAY))}:${format(calendarEnd.get(Calendar.MINUTE))}"
             setOnClickListener { openTimePicker(binding.timeEnd, calendarEnd) }
         }
 
@@ -82,10 +82,12 @@ class CreateFragment : Fragment(R.layout.fragment_create) {
 
         val datePickerDialog = DatePickerDialog(
             requireContext(),
-            { _, year, month, date -> //Showing the picked value in the textView
-                btn.text = "$date.$month.$year"
+            { _, year, month, date ->
+                val dateFormat = format(date)
+                val monthFormat = format(month)
+                btn.text = "$dateFormat.$monthFormat.$year"
                 cld.set(Calendar.DATE, date)
-                cld.set(Calendar.MONTH, month-1)
+                cld.set(Calendar.MONTH, month - 1)
                 cld.set(Calendar.YEAR, year)
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)
         )
@@ -99,15 +101,18 @@ class CreateFragment : Fragment(R.layout.fragment_create) {
 
         val timePickerDialog = TimePickerDialog(
             requireContext(),
-            { _, hour, minute -> //Showing the picked value in the textView
-
-                btn.text = "$hour:$minute"
+            { _, hour, minute ->
+                val hourFormat = format(hour)
+                val minuteFormat = format(minute)
+                btn.text = "$hourFormat:$minuteFormat"
                 cld.set(Calendar.HOUR_OF_DAY, hour)
                 cld.set(Calendar.MINUTE, minute)
             }, c.get(Calendar.HOUR), c.get(Calendar.MINUTE), true
         )
         timePickerDialog.show()
     }
+
+    private fun format(date: Int) = if (date < 10) "0$date" else "$date"
 
     private fun Calendar.clearMinutesSeconds() : Calendar
     {
